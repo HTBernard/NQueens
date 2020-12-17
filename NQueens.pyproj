@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>f189e33f-594a-43b1-b3ba-cf46940690c5</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>nqueen_solving.py</StartupFile>
+    <StartupFile>test_nqueen.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

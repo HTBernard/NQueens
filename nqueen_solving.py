@@ -6,35 +6,49 @@ class Board:
         self.tabBoard = tabBoard
 
     #First algorithm, supposed to be very slow
-    def worst_QueenFinder(self, board_size, colIndex = 0) :
-        for lineIndex in range(board_size) :
-            if self.tabBoard[lineIndex][colIndex] == 0 :
-                self.heatMap(lineIndex, colIndex, 1)
-                if colIndex != len(self.tabBoard) - 1 :
+    def worst_QueenFinder(self, board_size, col = 0) :
+        for line in range(board_size) :
+            if self.tabBoard[line][col] == 0 :
+                self.placeQueen(board_size, line, col, 1)
+                if col != len(self.tabBoard) - 1 :
                     if self.queensSafes() :
-                        if self.worst_QueenFinder(board_size, colIndex + 1)[1] :
+                        if self.worst_QueenFinder(board_size, col + 1)[1] :
+                            if col == 0 :
+                                self.unHeat()
                             return self.tabBoard, True
-                    self.heatMap(lineIndex, colIndex, -1)
+                    self.placeQueen(board_size, line, col, -1)
                 elif self.isSoluce()[0] :
+                    if col == 0 :
+                        self.unHeat()
                     return self.tabBoard, True
                 else :
-                    self.heatMap(lineIndex, colIndex, -1)
+                    self.placeQueen(board_size, line, col, -1)
+        self.unHeat()
         return self.tabBoard, False
 
     #Second algorithm, supposed to be the fastest
     def best_QueenFinder(self, board_size) :
-        for lineIndex in range(board_size) :
-            if self.tabBoard[lineIndex][colIndex] == 0 :
-                self.tabBoard[lineIndex][colIndex] = 1
-                if colIndex != len(self.tabBoard) - 1 :
-                    self.showHeatMap()
-                    print(self)
         return self.tabBoard, False
 
     #Third algorithm who return every possible configuration for the given board size
-    def all_QueenFinder(self, board_size) :
+    def all_QueenFinder(self, board_size, col = 0, boardConfigurations = []) :
+        for line in range(board_size) :
+            if self.tabBoard[line][col] == 0 :
+                self.placeQueen(board_size, line, col, 1)
 
-        return boardsConfigurations
+                if col != len(self.tabBoard) - 1 :
+                    self.all_QueenFinder(board_size, col + 1, boardConfigurations)
+                elif self.isSoluce()[0] :
+                    print(self)
+                    boardConfigurations.append(self.tabBoard)
+                    self.placeQueen(board_size, line, col, -1)
+                else :
+                    self.placeQueen(board_size, line, col, -1)
+        if col != 0 :
+            pass
+        for board in boardConfigurations :
+            unHeat(board)
+        return boardConfigurations
 
     #Return true if any queen can't attack any other queen
     def queensSafes(self, heatNumber = False) :
@@ -69,32 +83,49 @@ class Board:
         return self.queensSafes(), nbQueen
 
     #Print the board
-    def __repr__(self) :
+    def __repr__(self, showHeatMap = 0) :
         printBoard = ""
         for line in self.tabBoard :
             for case in line :
-                printBoard += str(1 if case == 1 else 0) + " "
+                if showHeatMap == 2:
+                    printBoard += ("X" if case == 1 else ".") + " "
+                elif showHeatMap == 1:
+                    printBoard += ("." if case == 0 else str(case)) + " "
+                else :
+                    printBoard += " " + str(1 if case == 1 else 0)
             printBoard += "\n"
-        return printBoard
+        return printBoard.rstrip("\n")
 
-    def heatMap(self, line, col, heatUp) :
-        self.tabBoard[line][col] += heatUp
-        for oneLine in range (len(self.tabBoard)) :
-            if self.tabBoard[line][oneLine] == 1-heatUp :
-                self.tabBoard[line][oneLine] = 1+heatUp
-            elif self.tabBoard[line][oneLine] > 1 :
-                self.tabBoard[line][oneLine] += heatUp
-        for oneCol in range (len(self.tabBoard)) :
-            if self.tabBoard[oneCol][col] == 1-heatUp :
-                self.tabBoard[oneCol][col] = 1+heatUp
-            elif self.tabBoard[oneCol][col] > 1 :
-                self.tabBoard[oneCol][col] += heatUp
+    def unHeat(self) :
+        for line in range(len(self.tabBoard)) :
+            for col in range(len(self.tabBoard)) :
+                if self.tabBoard[line][col] != 1 :
+                    self.tabBoard[line][col] = 0
+
+    def manageHeat(self, line, col, heat) :
+        if self.tabBoard[line][col] == 1-heat :
+            self.tabBoard[line][col] = 1+heat
+        elif self.tabBoard[line][col] > 1 :
+            self.tabBoard[line][col] += heat
+
+    def placeQueen(self, board_size, line, col, heat) :
+        self.tabBoard[line][col] += heat
+        for oneLine in range (board_size) :
+            self.manageHeat(line, oneLine, heat)
+        for oneCol in range (board_size) :
+            self.manageHeat(oneCol, col, heat)
+        for diag in range(-board_size, 0) :
+            if line+diag < board_size and line + diag > -1 :
+                if col+diag < board_size and col + diag > -1 :
+                    self.manageHeat(line + diag, col + diag, heat)
+                if col-diag < board_size and col - diag > -1 :
+                    self.manageHeat(line + diag, col - diag, heat)
+            if line-diag < board_size and line - diag > -1 :
+                if col+diag < board_size and col + diag > -1 :
+                    self.manageHeat(line - diag, col + diag, heat)
+                if col-diag < board_size and col - diag > -1 :
+                    self.manageHeat(line - diag, col - diag, heat)
         return
-
-    def permuteLines(self, line1, line2) :
-        firstLine = self.tabBoard[line1]
-        self.tabBoard[line1] = self.tabBoard[line2]
-        self.tabBoard[line2] = firstLine
 
 def solve_n_queen_small(board_size, board) :
     theBoard = Board(board)
@@ -124,10 +155,6 @@ def print_board(board_size, board) :
 def generate_board(size):
     return [[0 for x in range(size)] for y in range(size)]
 
-size = 16
-board = generate_board(size)
-millis = int(round(time.time() * 1000))
-board = solve_n_queen_small(size, board)[0]
-millis = millis = int(round(time.time() * 1000)) - millis
-print (Board(board))
-print("Took " + str(millis) + " milliseconds.")
+board = Board(generate_board(10))
+
+print(Board(board.worst_QueenFinder(10)[0]))
