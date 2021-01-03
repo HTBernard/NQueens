@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>f189e33f-594a-43b1-b3ba-cf46940690c5</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>test_nqueen.py</StartupFile>
+    <StartupFile>nqueen_solving.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -26,6 +26,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="module1.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="nqueen_solving.py" />
     <Compile Include="test_nqueen.py" />
   </ItemGroup>
