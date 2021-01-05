@@ -39,7 +39,7 @@ class Board:
                 self.riskMap()
         return boardConfigs
 
-    # TODO
+    # Ensure 2 queens given are safe from eachother
     def queensSafes(queen, queenComp):
         if not (queen[0] == queenComp[0] and queen[1] == queenComp[1]):
             queenOnLine = queen[0] == queenComp[0]
@@ -50,7 +50,7 @@ class Board:
                 return False
         return True
 
-    # TODO
+    # Find all queens on the board
     def findQueens(self):
         queensTab = []
         for lineCmpt in range(self.board_size):
@@ -96,11 +96,11 @@ class Board:
         for queenPos in queensTab:
             self.heatUp(queenPos[0], queenPos[1])
 
-    # TODO
+    # Return a blank board
     def blankBoard(size):
         return [[0 for x in range(self.board_size)] for y in range(size)]
 
-    # TODO
+    # Update the risk board for a given position
     def heatUp(self, line, col):
         for distance in range(1, self.board_size):
             if line-distance >= 0:
