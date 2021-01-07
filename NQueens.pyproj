@@ -26,9 +26,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="module1.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="nqueen_solving.py" />
     <Compile Include="test_nqueen.py" />
   </ItemGroup>

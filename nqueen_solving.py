@@ -98,7 +98,7 @@ class Board:
 
     # Return a blank board
     def blankBoard(size):
-        return [[0 for x in range(self.board_size)] for y in range(size)]
+        return [[0 for x in range(size)] for y in range(size)]
 
     # Update the risk board for a given position
     def heatUp(self, line, col):
