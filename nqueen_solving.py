@@ -27,6 +27,8 @@ class Board:
 
     # Return every possible configuration for the given board size
     def all_QueenFinder(self, col=0, boardConfigs=[]):
+        if col == 0:
+            boardConfigs = []
         for line in range(self.board_size):
             if self.riskBoard[line][col] == 0:
                 self.tabBoard[line][col] = 1
