@@ -127,7 +127,6 @@ def solve_n_queen_small(board_size, board):
 
 
 def solve_n_queen_big(board_size, board):
-    theBoard = Board(board)
     return None, False
 
 
